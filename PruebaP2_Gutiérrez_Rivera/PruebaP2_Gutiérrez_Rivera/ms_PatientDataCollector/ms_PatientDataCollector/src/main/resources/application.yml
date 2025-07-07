@@ -1,0 +1,47 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /conjunta/2p/parient-data-collector
+
+spring:
+  application:
+    name: parient-data-collector
+
+  datasource:
+    url: jdbc:postgresql://localhost:26257/parientdatacollectordb?sslmode=disable
+    username: root
+    password:
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  config:
+    import: optional:configserver:http://localhost:8888
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: false
+    fetch-registry: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

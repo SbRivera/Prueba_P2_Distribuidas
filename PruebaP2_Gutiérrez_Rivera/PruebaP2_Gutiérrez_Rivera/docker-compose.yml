@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  cockroachdb:
+    image: cockroachdb/cockroach:v23.1.11
+    container_name: cockroachdb
+    command: start-single-node --insecure
+    ports:
+      - "26257:26257"   # PostgreSQL-compatible port
+      - "8080:8080"     # Web UI de CockroachDB
+    volumes:
+      - cockroach-data:/cockroach/cockroach-data
+    networks:
+      - conjunta-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"   # Panel de administración
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - conjunta-network
+
+  eureka-server:
+    build:
+      context: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - conjunta-network
+
+  config-server:
+    build:
+      context: ./config-server
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    networks:
+      - conjunta-network
+
+  patient-data-collector:
+    build:
+      context: ./patient-data-collector
+    container_name: patient-data-collector
+    ports:
+      - "8081:8081"
+    depends_on:
+      - rabbitmq
+      - cockroachdb
+      - eureka-server
+      - config-server
+    networks:
+      - conjunta-network
+
+  health-analyzer:
+    build:
+      context: ./health-analyzer
+    container_name: health-analyzer
+    ports:
+      - "8082:8082"
+    depends_on:
+      - rabbitmq
+      - cockroachdb
+      - eureka-server
+      - config-server
+    networks:
+      - conjunta-network
+
+  care-notifier:
+    build:
+      context: ./care-notifier
+    container_name: care-notifier
+    ports:
+      - "8083:8083"
+    depends_on:
+      - rabbitmq
+      - cockroachdb
+      - eureka-server
+      - config-server
+    networks:
+      - conjunta-network
+
+volumes:
+  cockroach-data:
+
+networks:
+  conjunta-network:

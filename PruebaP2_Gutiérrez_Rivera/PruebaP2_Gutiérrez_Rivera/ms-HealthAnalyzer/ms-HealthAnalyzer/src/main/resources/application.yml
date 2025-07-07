@@ -1,0 +1,47 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /conjunta/2p/health-analyzer
+
+spring:
+  application:
+    name: health-analyzer
+
+  datasource:
+    url: jdbc:postgresql://localhost:26257/healthdb?sslmode=disable
+    username: root
+    password:
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  config:
+    import: optional:configserver:http://localhost:8888
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
