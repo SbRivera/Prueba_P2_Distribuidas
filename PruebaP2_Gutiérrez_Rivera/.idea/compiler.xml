@@ -2,22 +2,28 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="true" />
+      <profile default="true" name="Default" enabled="true">
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
+        </processorPath>
+      </profile>
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ms-HealthAnalyzer" />
-        <module name="ms-CareNotifier" />
+        <module name="ms-api-gateway" />
+        <module name="ms-eureka-server" />
       </profile>
-      <profile name="Annotation profile for ms_PatientDataCollector" enabled="true">
+      <profile name="Annotation profile for micro services" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
-        <module name="ms_PatientDataCollector" />
+        <module name="ms-HealthAnalyzer" />
+        <module name="ms-PatientDataCollector" />
+        <module name="ms-CareNotifier" />
       </profile>
     </annotationProcessing>
   </component>
@@ -25,7 +31,9 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="ms-CareNotifier" options="-parameters" />
       <module name="ms-HealthAnalyzer" options="-parameters" />
-      <module name="ms_PatientDataCollector" options="-parameters" />
+      <module name="ms-PatientDataCollector" options="-parameters" />
+      <module name="ms-api-gateway" options="-parameters" />
+      <module name="ms-eureka-server" options="-parameters" />
     </option>
   </component>
 </project>
